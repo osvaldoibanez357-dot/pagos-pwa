@@ -47,9 +47,38 @@ function renderTransactions() {
 }
 
 function formatDate(v){ const [y,m,d]=v.split('-').map(Number); return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'short'}).format(new Date(y,m-1,d)); }
+function localDateValue(d=new Date()){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; }
+function normalizeAmount(raw=''){
+  let v=String(raw).trim().replace(/[^0-9,.-]/g,'');
+  if(!v) return '';
+  const comma=v.lastIndexOf(','), dot=v.lastIndexOf('.');
+  if(comma>-1 && dot>-1){
+    if(comma>dot) v=v.replace(/\./g,'').replace(',','.');
+    else v=v.replace(/,/g,'');
+  } else if(comma>-1) v=v.replace(',','.');
+  const n=Number(v);
+  return Number.isFinite(n) && n>0 ? String(Math.round(n*100)/100) : '';
+}
+function prefillFromUrl(){
+  const params=new URLSearchParams(location.search);
+  const hasWalletData=['amount','merchant','card','date','category','note'].some(k=>params.has(k));
+  if(!hasWalletData) return;
+  openDialog();
+  const amount=normalizeAmount(params.get('amount')||'');
+  if(amount) $('amount').value=amount;
+  if(params.get('merchant')) $('merchant').value=params.get('merchant');
+  if(params.get('date')) $('date').value=params.get('date');
+  if(params.get('category')) { const option=[...$('category').options].find(o=>o.value===params.get('category')); if(option) $('category').value=option.value; }
+  $('method').value='Apple Pay';
+  const notes=[];
+  if(params.get('card')) notes.push(`Tarjeta: ${params.get('card')}`);
+  if(params.get('note')) notes.push(params.get('note'));
+  if(notes.length) $('note').value=notes.join(' · ');
+  history.replaceState({},'',location.pathname+location.hash);
+}
 function escapeHtml(str=''){ return str.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 
-function openDialog(){ $('date').value = new Date().toISOString().slice(0,10); $('movementDialog').showModal(); setTimeout(()=>$('amount').focus(),50); }
+function openDialog(){ $('date').value = localDateValue(); $('movementDialog').showModal(); setTimeout(()=>$('amount').focus(),50); }
 $('quickAdd').addEventListener('click',openDialog);
 $('closeDialog').addEventListener('click',()=>$('movementDialog').close());
 $('movementForm').addEventListener('submit',(e)=>{
@@ -77,3 +106,4 @@ $('importInput').addEventListener('change',async(e)=>{
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 render();
+prefillFromUrl();
