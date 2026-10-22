@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f19" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mis Pagos" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Mis Pagos</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Control personal</p>
+        <h1>Mis Pagos</h1>
+      </div>
+      <button id="quickAdd" class="icon-btn" aria-label="Agregar movimiento">＋</button>
+    </header>
+
+    <main>
+      <section class="summary-grid">
+        <article class="card hero-card">
+          <span>Saldo del mes</span>
+          <strong id="balance">$0.00</strong>
+          <small id="monthLabel"></small>
+        </article>
+        <article class="card metric income">
+          <span>Ingresos</span>
+          <strong id="incomeTotal">$0.00</strong>
+        </article>
+        <article class="card metric expense">
+          <span>Gastos</span>
+          <strong id="expenseTotal">$0.00</strong>
+        </article>
+      </section>
+
+      <section class="card chart-card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Este mes</p>
+            <h2>Ingresos vs gastos</h2>
+          </div>
+        </div>
+        <div id="barChart" class="bar-chart" aria-label="Gráfica de ingresos y gastos"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Distribución</p>
+            <h2>Gasto por categoría</h2>
+          </div>
+        </div>
+        <div id="categoryList" class="category-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Actividad</p>
+            <h2>Movimientos recientes</h2>
+          </div>
+          <button id="clearAll" class="text-btn danger">Borrar todo</button>
+        </div>
+        <div id="transactions" class="transactions"></div>
+      </section>
+
+      <section class="card tools-card">
+        <div>
+          <p class="eyebrow">Respaldo</p>
+          <h2>Tus datos se guardan en este dispositivo</h2>
+          <p class="muted">Exporta un respaldo antes de borrar Safari, cambiar de teléfono o limpiar datos del sitio.</p>
+        </div>
+        <div class="tool-actions">
+          <button id="exportBtn" class="secondary-btn">Exportar JSON</button>
+          <label class="secondary-btn file-label">Importar JSON<input id="importInput" type="file" accept="application/json" hidden /></label>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="movementDialog">
+    <form id="movementForm" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">Nuevo movimiento</p>
+          <h2>Registrar pago</h2>
+        </div>
+        <button type="button" id="closeDialog" class="icon-btn">×</button>
+      </div>
+
+      <div class="type-toggle" role="group" aria-label="Tipo de movimiento">
+        <input type="radio" id="expenseType" name="type" value="expense" checked />
+        <label for="expenseType">Gasto</label>
+        <input type="radio" id="incomeType" name="type" value="income" />
+        <label for="incomeType">Ingreso</label>
+      </div>
+
+      <label>Monto
+        <input id="amount" name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="0.00" />
+      </label>
+      <label>Comercio o concepto
+        <input id="merchant" name="merchant" type="text" required placeholder="Ej. Oxxo, Uber, nómina" />
+      </label>
+      <label>Categoría
+        <select id="category" name="category" required>
+          <option>Comida</option>
+          <option>Transporte</option>
+          <option>Servicios</option>
+          <option>Suscripciones</option>
+          <option>Compras</option>
+          <option>Salud</option>
+          <option>Entretenimiento</option>
+          <option>Ingresos</option>
+          <option>Otros</option>
+        </select>
+      </label>
+      <label>Método de pago
+        <select id="method" name="method">
+          <option>Apple Pay</option>
+          <option>Tarjeta</option>
+          <option>Efectivo</option>
+          <option>Transferencia</option>
+          <option>Otro</option>
+        </select>
+      </label>
+      <label>Fecha
+        <input id="date" name="date" type="date" required />
+      </label>
+      <label>Nota
+        <textarea id="note" name="note" rows="2" placeholder="Opcional"></textarea>
+      </label>
+      <button class="primary-btn" type="submit">Guardar movimiento</button>
+    </form>
+  </dialog>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
