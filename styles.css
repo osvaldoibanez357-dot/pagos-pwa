@@ -72,3 +72,7 @@ input:focus,select:focus,textarea:focus { border-color:#789cff; box-shadow:0 0 0
 .type-toggle label { display:block; text-align:center; padding:12px; background:#0a1020; border:1px solid var(--line); border-radius:13px; }
 .type-toggle input:checked + label { background:#e9eefc; color:#0b1020; }
 @media (min-width:680px) { .summary-grid { grid-template-columns: 1.4fr .8fr .8fr; } .hero-card { grid-column:auto; grid-row: span 2; } }
+
+#subscriptionForm { padding:20px; display:grid; gap:14px; }
+.subscription-row { display:grid; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
+.subscription-row:last-child { border-bottom:0; }

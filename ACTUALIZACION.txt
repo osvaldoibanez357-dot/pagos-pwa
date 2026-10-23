@@ -1,0 +1,21 @@
+ACTUALIZAR MIS PAGOS
+
+1. Descomprime este archivo.
+2. Abre https://github.com/osvaldoibanez357-dot/pagos-pwa
+3. En la rama main, usa Add file > Upload files.
+4. Sube index.html, app.js, recurring.js, styles.css y sw.js al directorio principal. Reemplaza los archivos existentes y confirma el commit.
+5. Espera a que GitHub Pages termine de publicar y recarga el sitio.
+
+Suscripciones mensuales
+- Agregar: nombre, importe, primer cobro, método de pago y nota.
+- Se registran gastos pendientes al abrir la página, volver a ella o mientras permanece abierta.
+- Cada mes se registra una sola vez. El día 29/30/31 se ajusta al último día disponible.
+- Pausar no elimina gastos previos. Reactivar omite cobros del periodo pausado.
+- Eliminar conserva los gastos ya registrados.
+- Exportar/Importar JSON incluye las suscripciones. Los respaldos anteriores siguen siendo compatibles.
+- Borrar todo borra movimientos, conserva suscripciones y no recrea los cobros que ya se habían generado.
+- El botón + inicia un formulario limpio. Los enlaces del atajo conservan el llenado de Apple Pay.
+
+Los gastos no se generan mientras el sitio está cerrado: se ponen al día al abrirlo. No se efectúan cobros bancarios.
+
+Verificación: sintaxis JavaScript y casos de generación mensual (meses cortos, año bisiesto, meses pendientes, duplicados y pausa). No se pudo ejecutar la prueba visual de navegador en este entorno.
